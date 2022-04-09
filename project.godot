@@ -8,10 +8,20 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://src/entities/character.gd"
+} ]
+_global_script_class_icons={
+"Character": ""
+}
+
 [application]
 
 config/name="Narin"
-run/main_scene="res://src/Main.tscn"
+run/main_scene="res://src/main.tscn"
 config/icon="res://icon.png"
 
 [display]

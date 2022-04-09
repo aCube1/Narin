@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Idle (32x32).png-e3d08a8d27bea0ff16b73ad238f1f37f.stex"
+path="res://.import/run.png-48888a5ed41be350e0fb98028ce827e3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Pink Man/Idle (32x32).png"
-dest_files=[ "res://.import/Idle (32x32).png-e3d08a8d27bea0ff16b73ad238f1f37f.stex" ]
+source_file="res://assets/player/run.png"
+dest_files=[ "res://.import/run.png-48888a5ed41be350e0fb98028ce827e3.stex" ]
 
 [params]
 
