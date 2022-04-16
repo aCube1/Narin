@@ -112,5 +112,5 @@ frames = SubResource( 6 )
 animation = "fall"
 frame = 2
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="."]
 current = true
