@@ -37,7 +37,7 @@ func _ready() -> void:
 	CoyoteTimer.wait_time = coyote_time
 	CoyoteTimer.one_shot = true
 	CoyoteTimer.connect("timeout", self, "_on_CoyoteTimer_timeout")
-	add_child(CoyoteTimer, true)
+	add_child(CoyoteTimer)
 
 func _physics_process(delta: float) -> void:
 	if CoyoteTimer.is_stopped():
@@ -56,8 +56,8 @@ func _process(_delta: float) -> void:
 	if _can_jump and is_falling and CoyoteTimer.is_stopped():
 		CoyoteTimer.start()
 	
-	if not CoyoteTimer.is_stopped():
-		print("Coyote time left: ", CoyoteTimer.time_left)
+	if jumpped:
+		CoyoteTimer.stop()
 
 func _on_CoyoteTimer_timeout() -> void:
 	_can_jump = false

@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://assets/tileset.png" type="Texture" id=1]
-[ext_resource path="res://src/entities/character/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/entities/player/mage.tscn" type="PackedScene" id=2]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -190,7 +190,7 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
 [node name="Main" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
+[node name="Mage" parent="." instance=ExtResource( 2 )]
 position = Vector2( 672, 78 )
 
 [node name="TestLevel" type="TileMap" parent="."]
