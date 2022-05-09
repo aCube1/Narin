@@ -10,12 +10,30 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "KinematicBody2D",
-"class": "Character",
+"class": "Actor",
 "language": "GDScript",
-"path": "res://src/entities/character.gd"
+"path": "res://src/actors/actor.gd"
+}, {
+"base": "Actor",
+"class": "Player",
+"language": "GDScript",
+"path": "res://src/actors/player/mage.gd"
+}, {
+"base": "Reference",
+"class": "State",
+"language": "GDScript",
+"path": "res://src/actors/state_machine/state.gd"
+}, {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://src/actors/state_machine/state_machine.gd"
 } ]
 _global_script_class_icons={
-"Character": ""
+"Actor": "",
+"Player": "",
+"State": "",
+"StateMachine": ""
 }
 
 [application]
@@ -23,6 +41,10 @@ _global_script_class_icons={
 config/name="Narin"
 run/main_scene="res://src/main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://src/globals.gd"
 
 [display]
 
@@ -35,6 +57,10 @@ window/stretch/aspect="keep"
 [gdnative]
 
 singletons=[  ]
+
+[gui]
+
+theme/custom_font="res://assets/fonts/BitPotion/BitPotion.tres"
 
 [importer_defaults]
 
