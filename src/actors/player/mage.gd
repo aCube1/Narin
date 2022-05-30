@@ -3,45 +3,91 @@ class_name Player
 
 enum States {
 	IDLE,
-	RUN,
+	WALK,
+	FALL,
+	JUMP
 }
 
-onready var StateMachine := $StateMachine
-onready var IdleState: State = preload("./states/idle.gd").new()
-onready var RunState: State = preload("./states/run.gd").new()
+# Test only, will be removed later
+var current_state: String = ""
 
-var	_directions := {
-	"left": DIR_LEFT,
-	"right": DIR_RIGHT,
+onready var Animator := $Sprites/Animation
+onready var MoveStateMachine := $MoveStateMachine
+onready var move_states := {
+	"Idle": preload("./states/idle.gd").new(),
+	"Walk": preload("./states/walk.gd").new(),
+	"Fall": preload("./states/fall.gd").new(),
+	"Jump": preload("./states/jump.gd").new(),
 }
 
 func _ready() -> void:
-	var states := {
-		States.IDLE: {
-			"handler": IdleState,
-			"change_to": States.RUN,
-		},
-		States.RUN: {
-			"handler": RunState,
-			"change_to": StateMachine.PREVIOUS,
-		},
-	}
-	StateMachine.configure(states, States.IDLE)
+	setup_states()
 
 func _process(_delta: float) -> void:
 	direction = 0
-	for dir in _directions.keys():
-		if Input.is_action_pressed("move_%s" % dir):
-			direction = _directions[dir]
+	if Input.is_action_pressed("move_right"):
+		direction += 1
+		$Sprites.flip_h = false
+	if Input.is_action_pressed("move_left"):
+		direction -= 1
+		$Sprites.flip_h = true
+	
+	if Input.is_action_just_pressed("move_jump"):
+		jumpped = true
+	if Input.is_action_just_released("move_jump"):
+		jumpped = false
 
-func _on_StateMachine_state_changed(new_state) -> void:
-	var text: String = ""
-	match new_state:
+	update_animation()
+	$DebugContainer/State.text = "%s" % current_state
+
+func _physics_process(delta: float) -> void:
+	apply_movement(delta)
+
+func setup_states() -> void:
+	var states := {
+		States.IDLE: {
+			"handler": move_states.Idle,
+			"change_to": {
+				"walk": States.WALK,
+				"fall": States.FALL,
+				"jump": States.JUMP,
+			},
+		},
+		States.WALK: {
+			"handler": move_states.Walk,
+			"change_to": {
+				"idle": States.IDLE,
+				"jump": States.JUMP,
+			}
+		},
+		States.FALL: {
+			"handler": move_states.Fall,
+			"change_to": States.IDLE,
+		},
+		States.JUMP: {
+			"handler": move_states.Jump,
+			"change_to": MoveStateMachine.PREVIOUS,
+		},
+	}
+	MoveStateMachine.setup(states, States.IDLE)
+
+func update_animation() -> void:
+	match MoveStateMachine.get_current_state():
 		States.IDLE:
-			text = "Idle"
-		States.RUN:
-			text = "Run"
+			Animator.play("Idle")
+			Animator.advance(0)
+		States.WALK:
+			Animator.play("Walk")
+			Animator.advance(0)
+		States.FALL:
+			Animator.play("Fall")
+			Animator.advance(0)
+		States.JUMP:
+			Animator.play("Jump")
+			Animator.advance(0)
 		_:
-			text = "Undefined State"
+			Animator.play("RESET")
+			Animator.advance(0)
 
-	$DebugContainer/State.text = text
+func _on_MoveStateMachine_state_changed(new_state: int) -> void:
+	current_state = States.keys()[new_state]

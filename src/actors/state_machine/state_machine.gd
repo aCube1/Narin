@@ -45,7 +45,7 @@ func _input(event: InputEvent) -> void:
 	if current_state.has("handler"):
 		current_state.handler.input(event, owner)
 
-func configure(states_obj: Dictionary = {}, initial_state_id: int = 0) -> void:
+func setup(states_obj: Dictionary = {}, initial_state_id: int = 0) -> void:
 	for key in states_obj:
 		if states_obj[key] is Dictionary:
 			states[key] = states_obj.get(key)
@@ -57,8 +57,9 @@ func change_to_initial_state() -> void:
 
 func change_to_next_state(change_key: String) -> void:
 	if current_state.has("change_to") and (next_state == NO_STATE or next_state == current_state_id):
-		if change_key != "" and current_state.has(change_key):
-			next_state = current_state.change_to[change_key]
+		if change_key != "" and current_state.change_to is Dictionary:
+			if current_state.change_to.has(change_key):
+				next_state = current_state.change_to[change_key]
 		else:
 			next_state = current_state.change_to
 
@@ -89,5 +90,5 @@ func get_current_state() -> int:
 func is_current_state(id: int) -> bool:
 	return current_state_id == id
 
-func _on_CurrentState_completed(change_key) -> void:
+func _on_CurrentState_completed(change_key: String) -> void:
 	change_to_next_state(change_key)

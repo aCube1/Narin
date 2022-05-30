@@ -1,13 +1,17 @@
 extends State
 
-func enter(owner: Node) -> void:
-	if not owner is Actor:
-		push_error("Idle can only be used with actors")
-		return
+func enter(_owner: Actor) -> void:
+	pass
 
-func update(_delta: float, owner: Node) -> void:
+func update(_delta: float, owner: Actor) -> void:
 	if owner.direction != 0:
-		complete("run")
+		if !owner.running:
+			complete("walk")
+	if not owner.is_on_floor():
+		complete("fall")
 
-func physics_update(delta: float, owner: Node) -> void:
+	if owner.can_jump and owner.jumpped:
+		complete("jump")
+
+func physics_update(delta: float, owner: Actor) -> void:
 	owner.velocity.x = lerp(owner.velocity.x, 0, owner.ground_friction * delta) as int
